@@ -69,9 +69,9 @@ svgGenerator.drawArc(int x, int y, int width, int height, int startAngle, int ar
 svgGenerator.fillArc(int x, int y, int width, int height, int startAngle, int arcAngle); // Заполнение
 
 // Текст
-drawString("Hello World", int x, int y);
+svgGenerator.drawString("Hello World", int x, int y);
 // Форматированный текст
-drawString(AttributedCharacterIterator iterator, int x, int y);
+svgGenerator.drawString(AttributedCharacterIterator iterator, int x, int y);
 
 save();
 ```
@@ -107,9 +107,9 @@ createDoc();
 prepare();
 
 // Кривая Безье 2-го порядка
-drawCurveTo(float x1, float y1, float x2, float y2, float x3, float y3);
+svgGenerator.drawCurveTo(float x1, float y1, float x2, float y2, float x3, float y3);
 // Кривая Безье 3-го порядка
-drawCubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
+svgGenerator.drawCubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
 
 save();
 ```
