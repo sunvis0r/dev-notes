@@ -150,6 +150,7 @@ save();
 ```java
 createDoc();
 prepare();
+saveTransform();
 
 svgGenerator.translate(150, 150);
 // Все последующие объекты будут рисоваться относительно x = 150 и y = 150
@@ -158,6 +159,7 @@ svgGenerator.fillRect(0, 0, 100, 100); // Прямоугольник рисуе�
 // Отменить сдвиг (вернуться на координаты x = 0 и y = 0):
 svgGenerator.translate(-150, -150);
 
+restoreTransform();
 save();
 ```
 
@@ -165,6 +167,7 @@ save();
 ```java
 createDoc();
 prepare();
+saveTransform();
 
 // Поворот на 45 градусов (в радианах) по часовой стрелке:
 svgGenerator.rotate(Math.PI / 4);
@@ -175,6 +178,7 @@ svgGenerator.rotate(-Math.PI / 4);
 // Поворот на 45 градусов относительно точки:
 svgGenerator.rotate(double theta, double x, double y);
 
+restoreTransform();
 save();
 ```
 
@@ -182,10 +186,12 @@ save();
 ```java
 createDoc();
 prepare();
+saveTransform();
 
 // Увеличение по оси X в 2 раза, сжатие по оси Y в 2 раза
 svgGenerator.scale(2, 0.5);
 
+restoreTransform();
 save();
 ```
 
@@ -193,12 +199,24 @@ save();
 ```java
 createDoc();
 prepare();
+saveTransform();
 
 svgGenerator.shear(0.5, 0);
 
+restoreTransform();
 save();
 ```
 
-#### Сохранение и восстановление трансформации
+#### Сохранение и восстановление трансформаций
+
+```java
+saveTransform() {
+    AffineTransform originalTransform = svgGenerator.getTransform();
+}
+
+restoreTransform() {
+    svgGenerator.setTransform(originalTransform);
+}
+```
 
 ## Парсинг SVG
