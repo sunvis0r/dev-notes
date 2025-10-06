@@ -70,6 +70,33 @@ svgGenerator.fillArc(int x, int y, int width, int height, int startAngle, int ar
 save();
 ```
 
+Цвета и градиенты:
+```java
+createDoc();
+prepare();
+
+// Сделать цвет «курсора» чёрный
+svgGenerator.setPaint(Color.BLACK);
+
+// Сделать цвет градиентным (линейный градиент)
+GradientPaint gradient = new GradientPaint(0, 0, Color.YELLOW, 500, 500, Color.RED);
+svgGenerator.setPaint(gradient);
+
+// Радиальный градиент
+float[] dist = {0.0f, 1.0f}; // Позиции цветов в градиенте
+Color[] colors = {Color.YELLOW, Color.RED}; // Цвета
+// Параметры градиента: центр (x, y), радиус и массив цветов
+RadialGradientPaint radialGradient = new RadialGradientPaint(
+    new Point2D.Float(150, 150),  // Центр градиента
+    100f,                         // Радиус
+    new float[] {0.0f, 1.0f},     // Пропорции цветов (в центре и на краю)
+    colors
+);
+svgGenerator.setPaint(radialGradient);
+
+save();
+```
+
 #### Сложные фигуры
 
 ```java
@@ -104,6 +131,11 @@ prepare();
 svgGenerator.drawCurveTo(float x1, float y1, float x2, float y2, float x3, float y3);
 // Кривая Безье 3-го порядка
 svgGenerator.drawCubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
+
+// Кривая Безье с 4-мя точками
+CubicCurve2D cubicCurve = new CubicCurve2D.Float(50, 50, 100, 100, 300, 100, 400, 50);
+svgGenerator.setPaint(Color.BLACK);
+svgGenerator.draw(cubicCurve);
 
 save();
 ```
