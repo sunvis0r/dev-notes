@@ -7,7 +7,7 @@
 
 ## Quick Start
 
-Подготовить SVG к рисованию:
+Подготовить SVG-документ:
 ```java
 createDoc() {
     DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
@@ -17,14 +17,28 @@ createDoc() {
 }
 ```
 
-Подготовить холст:
+Подготовить холст перед рисованием:
 ```java
 prepare() {
     svgGenerator.setSVGCanvasSize(new Dimension(400, 300));
 }
 ```
 
-Рисование:
+Сохранить:
+```java
+save() {
+    svgGenerator.stream(new File("output.svg"));
+}
+
+saveAsBytes() {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    svgGenerator.stream(new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8));
+}
+```
+
+### Рисование
+
+Геометрические примитивы:
 ```java
 createDoc();
 prepare();
@@ -59,27 +73,67 @@ drawString("Hello World", int x, int y);
 // Форматированный текст
 drawString(AttributedCharacterIterator iterator, int x, int y);
 
+save();
+```
+
+#### Сложные фигуры
+
+```java
+createDoc();
+prepare();
+
+// Polyline — ломаная линия (незамкнутая фигура)
+// Polygon — многоугольник (полигон) (замкнутая фигура)
+
+// Ломаная линия:
+svgGenerator.drawPolyline(xPoints, yPoints, 4);
+// Разделения на заполнение и контур нету
+
+// Многоугольник:
+int[] xPoints = {100, 150, 200, 250, 300};
+int[] yPoints = {400, 350, 400, 450, 400};
+int pointsCount = 5; // Кол-во точек в xPoints и yPoints
+svgGenerator.setPaint(Color.BLACK);
+svgGenerator.drawPolygon(xPoints, yPoints, pointsCount);
+svgGenerator.fillPolygon(xPoints, yPoints, pointsCount);
+
+// Треугольник — тот же многоугольник, но у которого только 3 точки (3 в xPoints и 3 в yPoints).
+
+save();
+```
+
+```java
+createDoc();
+prepare();
+
 // Кривая Безье 2-го порядка
 drawCurveTo(float x1, float y1, float x2, float y2, float x3, float y3);
 // Кривая Безье 3-го порядка
 drawCubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
 
-// Фигура любой сложности
-drawPath(GeneralPath path);
+save();
+```
+
+Использование SVG-тега
+[`<path>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths):
+```java
+createDoc();
+prepare();
+
+GeneralPath path = new GeneralPath();
+
+path.moveTo(50, 50);   // Начало пути
+path.lineTo(150, 50);  // Линия
+path.lineTo(100, 150); // Еще одна линия
+path.curveTo(250, 150, 250, 200, 200, 250); // Кубическая кривая Безье
+path.closePath();      // Закрытие пути (соединяет последнюю точку с начальной)
+
+svgGenerator.setPaint(Color.BLACK);
+svgGenerator.draw(path); // Контур
+svgGenerator.fill(path); // Заполнение
 
 save();
 ```
 
-Сохранить:
-```java
-save() {
-    svgGenerator.stream(new File("output.svg"));
-}
-
-saveAsBytes() {
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    svgGenerator.stream(new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8));
-}
-```
 
 ## Cheat Sheet
