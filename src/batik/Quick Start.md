@@ -67,11 +67,6 @@ svgGenerator.setPaint(Color.BLACK);
 svgGenerator.drawArc(int x, int y, int width, int height, int startAngle, int arcAngle); // Контур
 svgGenerator.fillArc(int x, int y, int width, int height, int startAngle, int arcAngle); // Заполнение
 
-// Текст
-svgGenerator.drawString("Hello World", int x, int y);
-// Форматированный текст
-svgGenerator.drawString(AttributedCharacterIterator iterator, int x, int y);
-
 save();
 ```
 
@@ -133,6 +128,44 @@ svgGenerator.fill(path); // Заполнение
 
 save();
 ```
+
+### Текст
+
+```java
+createDoc();
+prepare();
+
+svgGenerator.drawString("Hello World", int x, int y);
+
+// Текст с другим шрифтом:
+Font font = new Font("Arial", Font.PLAIN, 24);
+// Полужирный текст:
+Font font = new Font("Arial", Font.BOLD, 36);
+// Курсив:
+Font font = new Font("Arial", Font.ITALIC, 36);
+svgGenerator.setFont(font);
+svgGenerator.setPaint(Color.BLACK);
+svgGenerator.drawString("Hello World", 50, 50);
+
+// Форматированный текст
+AttributedString attributedString = new AttributedString("Hello World");
+attributedString.addAttribute(TextAttribute.FONT, new Font("Serif", Font.BOLD, 24));
+attributedString.addAttribute(TextAttribute.FOREGROUND, Color.RED);
+attributedString.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+AttributedCharacterIterator iterator = attributedString.getIterator();
+svgGenerator.drawString(iterator, 50, 50);
+
+save();
+```
+
+Атрибуты, которые можно использовать с `AttributedString`:
+* `TextAttribute.FONT` — шрифт.
+* `TextAttribute.FOREGROUND` — цвет текста.
+* `TextAttribute.SIZE` — размер шрифта.
+* `TextAttribute.WEIGHT` — толщина шрифта (например, `Font.BOLD`).
+* `TextAttribute.STRIKETHROUGH` — перечёркнутый текст.
+* `TextAttribute.UNDERLINE` — подчёркнутый текст.
+* `TextAttribute.POSTURE` — наклон шрифта (например, курсив).
 
 ### Трансформации курсора
 
@@ -202,6 +235,24 @@ prepare();
 saveTransform();
 
 svgGenerator.shear(0.5, 0);
+
+restoreTransform();
+save();
+```
+
+Несколько трансформаций сразу:
+```java
+createDoc();
+prepare();
+saveTransform();
+
+AffineTransform transform = new AffineTransform();
+
+transform.translate(100, 100);
+transform.rotate(Math.PI / 4);
+transform.scale(0.5, 0.5);
+
+svgGenerator.setTransform(transform);
 
 restoreTransform();
 save();
