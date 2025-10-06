@@ -5,4 +5,4 @@
 * [Все полезные ссылки](https://xmlgraphics.apache.org/batik/using/)
 * [JavaDoc-документация](https://xmlgraphics.apache.org/batik/javadoc/)
 
-* [**Quick Start**](Quick Start.md)
+## [Quick Start](./Quick%20Start.md)
